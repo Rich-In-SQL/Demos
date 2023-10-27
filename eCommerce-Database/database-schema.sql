@@ -1,4 +1,7 @@
-CREATE DATABASE DemoShop USE DemoShop
+CREATE DATABASE DemoShop;
+
+USE DemoShop;
+
 CREATE TABLE
     Users (
         userId INT IDENTITY (1, 1) NOT NULL,
@@ -29,14 +32,24 @@ VALUES
         'casper.goodwin81@gmail.com',
         'UK'
     ),
-    ('mariam', 'jones', 'mariam14@yahoo.com', 'USA'),
+    (
+        'mariam', 
+        'jones', 
+        'mariam14@yahoo.com', 
+        'USA'
+    ),
     (
         'eden',
         'breitenberg',
         'eden_breitenberg@hotmail.com',
         'IRE'
     ),
-    ('malachi', 'morris', 'malachi85@yahoo.com', 'BEL');
+    (
+        'malachi', 
+        'morris', 
+        'malachi85@yahoo.com', 
+        'BEL'
+    );
 
 CREATE TABLE
     Product (
@@ -65,7 +78,7 @@ CREATE TABLE
         basketID INT IDENTITY (1, 1) NOT NULL,
         -- This is the person who owns the basket, users can have more than one basket 
         UserID INT,
-        CreateDate DATETIME DEFAULT GETDATE ()
+        createDate DATETIME DEFAULT GETDATE ()
     )
 
 --This is the primary key constraint for the basketID
@@ -79,7 +92,8 @@ VALUES
     (1),
     (2),
     (3),
-    (5)
+    (5);
+
 CREATE TABLE
     BasketProduct (
         -- This is a foreign key, it references the basket table 
@@ -135,6 +149,7 @@ VALUES
 /* This query will get all baskets, their users and the products within the basket
 this uses an inner join so will only return values which on each side of the join, for
 example, user 4 doesn't have any products or a basket */
+
 SELECT
     *
 FROM
@@ -142,9 +157,12 @@ FROM
     INNER JOIN BasketProduct BP ON B.BasketID = BP.BasketID
     INNER JOIN Users U ON B.UserID = U.UserID
     INNER JOIN Product P ON BP.ProductID = P.ProductID
-    /* This query will get all baskets, their users and the products within the basket
-    this uses two left joins which will get me all users who have baskets, as you can see
-    user 5 has a basket but has no products but does have a basket. */
+
+
+/* This query will get all baskets, their users and the products within the basket
+this uses two left joins which will get me all users who have baskets, as you can see
+user 5 has a basket but has no products but does have a basket. */
+
 SELECT
     *
 FROM
@@ -152,3 +170,14 @@ FROM
     INNER JOIN Users U ON B.UserID = U.UserID
     LEFT JOIN BasketProduct BP ON B.BasketID = BP.BasketID
     LEFT JOIN Product P ON BP.ProductID = P.ProductID
+
+--Select all members and their premium status
+SELECT
+  forename,
+  surname,
+  CASE
+    WHEN isPremium = 1 THEN 'Premium Member'
+    ELSE 'Standard member'
+  END AS isPremium
+FROM
+  Users
